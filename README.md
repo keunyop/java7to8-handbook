@@ -1,11 +1,13 @@
 # java7to8-handbook
 
 ### 2.객체 생성과 파괴
+
 - 객체를 만들어야 할 떄와 만들지 말아야 할때
 - 올바른 개게 생성 방법과 불필요한 생성을 피하는 방법
 - 제때 파괴됨을 보장하고 파괴 전에 수행해야 할 정리 작업
 
 #### 2.1 생성자 대신 정적 팩터리 메서드를 고려하라
+
 - 이름을 가질 수 있다.
 - 호출될 때마다 인스턴스를 새로 생성하지는 않아도 된다.
 - 반환 타입의 하위 타입 객체를 반환할 수 있는 능력이 있다.
@@ -13,6 +15,7 @@
 - 정적 팩터리 메서드를 작성하는 시점에는 반환할 객체의 클래스가 존재하지 않아도 된다.
 
 ★ 정적 팩터리 메서드 명명 방식
+
 ```java
 // from: 매개변수를 하나 받아서 해당 타입의 인스턴스를 반환하는 형변환 매서드
 Date d = Date.from(instant);
@@ -40,6 +43,7 @@ List<Complaint> litany = Collections.list(legacyLitany);
 ```
 
 예)
+
 ```java
 // 기존 생성자 방식
 public PublishQueryOrder(String tntInstId, String projectId) {
@@ -81,4 +85,48 @@ public class ApplyDateUtil {
     ... // 나머지 코드는 생략
 }
 ```
+
 꼭 Assertion Error를 던질 필요는 없지만, 클래스 안에서 실수로라도 생성자를 호출하지 않도록 해준다.
+
+#### 2.6 불필요한 객체 생성을 피하라
+
+- 값비싼 객체를 재사용해 성능을 개선한다.
+
+```java
+// 기존 방식
+public class ApplyDateUtil {
+    public static Date getMinDay() {
+        // 값비싼 객체 생성
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // Parse date format
+        return sdf.parse(ProductValueRangesEnum.TIME.getMin());
+    }
+
+    public static Date getMaxDay() {
+        // 값비싼 객체 생성
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        // Parse date format
+        return sdf.parse(ProdcoreConstants.LAST_DATE_TIME_STR);
+    }
+}
+
+// 값비싼 객체 재사용 방식
+public class ApplyDateUtil {
+    
+    // 값비싼 객체 생성은 캐싱하여 재사용 한다.
+    private static final sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    public static Date getMinDay() {
+        // Parse date format
+        return sdf.parse(ProductValueRangesEnum.TIME.getMin());
+    }
+
+    public static Date getMaxDay() {
+        // Parse date format
+        return sdf.parse(ProdcoreConstants.LAST_DATE_TIME_STR);
+    }
+}
+
+```
