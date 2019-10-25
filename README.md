@@ -130,3 +130,59 @@ public class ApplyDateUtil {
 }
 
 ```
+
+#### 2.x try-finally 보다는 try-with-resources를 사용하라
+
+```java
+/**
+ * 기존 try-finally 방식
+ */
+public class ProcessExecuteSql extends Thread {
+    public void runSelect() {
+        Connection con = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            con = ConnectionManager.getConnection();
+            st = con.createStatement();
+            rs = st.executeQuery("");
+
+        } catch (SQLException ex) {
+            // 에러처리
+        } finally {
+            if (rs != null)
+                try {
+                    rs.close();
+                } catch (SQLException ex) {
+                }
+            if (st != null)
+                try {
+                    st.close();
+                } catch (SQLException ex) {
+                }
+            if (con != null)
+                try {
+                    con.close();
+                } catch (SQLException ex) {
+                }
+        }
+    }
+}
+
+/**
+ * 권장 try-with-resources 방식
+ */
+public class ProcessExecuteSql extends Thread {
+    public void runSelect() {
+
+        try (Connection con = ConnectionManager.getConnection();
+               Statement st = con.createStatement();
+               ResultSet rs = st.executeQuery("")) {
+        } catch (SQLException ex) {
+            // 에러처리
+        }
+    }
+}
+
+```
