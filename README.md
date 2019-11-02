@@ -131,7 +131,7 @@ public class ApplyDateUtil {
 
 ```
 
-#### 2.x try-finally 보다는 try-with-resources를 사용하라
+#### 2.9 try-finally 보다는 try-with-resources를 사용하라
 
 ```java
 /**
@@ -185,4 +185,14 @@ public class ProcessExecuteSql extends Thread {
     }
 }
 
+```
+
+### 4.클래스와 인터페이스
+
+#### 4.19 상속을 고려해 설계하고 문서화하라. 그러지 않았다면 상속을 금지하라
+
+```java
+// 상속을 위한 메서드의 내부 동작 방식을 설명하는 주석
+// Implementation Requirements
+@implSpec
 ```
