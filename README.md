@@ -190,9 +190,22 @@ public class ProcessExecuteSql extends Thread {
 ### 4.클래스와 인터페이스
 
 #### 4.19 상속을 고려해 설계하고 문서화하라. 그러지 않았다면 상속을 금지하라
-
 ```java
 // 상속을 위한 메서드의 내부 동작 방식을 설명하는 주석
 // Implementation Requirements
 @implSpec
+```
+
+#### 4.21 인터페이스는 구현하는 쪽을 생각해 설계하라
+```java
+public interface ProdcoreHandleCallBack<T> {
+
+    // 기존 방식
+    public void checkParams();
+
+    // 인터페이스에 추가된 디폴트 메서드 방식
+    default void checkParams() {
+
+    }
+}
 ```
