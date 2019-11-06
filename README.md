@@ -209,3 +209,16 @@ public interface ProdcoreHandleCallBack<T> {
     }
 }
 ```
+
+#### 4.22 인터페이스는 타입을 정의하는 용도로만 사용하라
+```java
+// 유틸리티성 클래스 (Constants 클래스도 포함) 는 인스턴스화할 수 없도록 한다.
+public class DateUtil {
+    // 기본생성자가 만들어지는 것을 막는다(인스턴스화 방지용).
+    private DateUtil() {
+        throw new AssertionError();
+    }
+}
+```
+
+- 유틸리티 클래스의 상수를 빈번히 사용한다면 정적 임포트하여 클래스 이름을 생략할 수 있다.
