@@ -251,3 +251,5 @@ public PdLogHDO query(String tntInstId, String txDt, String txGuid, int seqNbr) 
     param.put("seqNbr", seqNbr);
 }
 ```
+
+#### 5.29 이왕이면 제네릭 타입으로 만들라
