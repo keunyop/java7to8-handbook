@@ -222,3 +222,32 @@ public class DateUtil {
 ```
 
 - 유틸리티 클래스의 상수를 빈번히 사용한다면 정적 임포트하여 클래스 이름을 생략할 수 있다.
+
+
+### 5.제네릭
+
+#### 5.27 비검사 경고를 제거하라
+
+- @SuppressWarnings 애너테이션은 항상 가능한 한 좁은 범위에 적용하자
+
+```java
+// @SuppressWarnings이 메소드 전체에 달려있다.
+@SuppressWarnings({ "unchecked", "rawtypes" })
+public PdLogHDO query(String tntInstId, String txDt, String txGuid, int seqNbr) {
+    Map param = new HashMap();
+    param.put("tntInstId", tntInstId);
+    param.put("txDt", txDt);
+    param.put("txGuid", txGuid);
+    param.put("seqNbr", seqNbr);
+}
+
+// @SuppressWarnings 가능한 한 범위를 좁혀라.
+public PdLogHDO query(String tntInstId, String txDt, String txGuid, int seqNbr) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    Map param = new HashMap();
+    param.put("tntInstId", tntInstId);
+    param.put("txDt", txDt);
+    param.put("txGuid", txGuid);
+    param.put("seqNbr", seqNbr);
+}
+```
