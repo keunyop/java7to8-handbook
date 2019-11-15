@@ -253,3 +253,43 @@ public PdLogHDO query(String tntInstId, String txDt, String txGuid, int seqNbr) 
 ```
 
 #### 5.29 이왕이면 제네릭 타입으로 만들라
+
+#### 5.33 타입 안전 이종 컨테이너를 고려하라
+
+```java
+// BEFORE
+// ProductTableEnum의 getByCode() 함수를 많이 사용한다.
+// 호출시마다 100개의 value를 매번 iterate 한다.
+public static ProductTableEnum getByCode(String code) {
+    for (ProductTableEnum value : ProductTableEnum.values()) {
+        if (StringUtil.equals(code, value.getCode())) {
+            return value;
+        }
+    }
+    return null;
+}
+
+// AFTER
+// ProductTableEnum의 각 value를 담고있는 Map을 만들어 tableNm을 key로 get하게끔 한다.
+public class TableInfo {
+    private static final Map<String, ProductTableEnum> tables = new HashMap<>();
+
+    static {
+        for (ProductTableEnum table : ProductTableEnum.values()) {
+            tables.put(table.getCode(), table);
+        }
+    }
+
+    public static ProductTableEnum getTable(String tableNm) {
+        return tables.get(tableNm);
+    }
+}
+
+// 호출방법
+// BEFORE
+ProductTableEnum table = ProductTableEnum.getByCode("테이블명");
+
+// AFTER
+ProductTableEnum table = TableInfo.getTable("테이블명");
+
+```
