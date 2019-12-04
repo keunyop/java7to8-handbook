@@ -293,3 +293,43 @@ ProductTableEnum table = ProductTableEnum.getByCode("테이블명");
 ProductTableEnum table = TableInfo.getTable("테이블명");
 
 ```
+
+### 7.람다와 스트림
+
+#### 7.42 익명 클래스보다는 람다를 사용하라
+
+```java
+/**
+ *  익명 클래스의 인스턴스를 함수 객체로 사용 - 낡은 기법
+ */
+
+// 조건코드 오름차순 정렬
+Collections.sort(outList, new Comparator<ConditionTemplateBase>() {
+    @Override
+    public int compare(ConditionTemplateBase o1, ConditionTemplateBase o2) {
+        return o1.getCode().compareTo(o2.getCode());
+    }
+});
+
+
+/**
+ *  람다식을 함수 객체로 사용 - 익명 클래스 대체
+ */
+
+// 조건코드 오름차순 정렬
+Collections.sort(outList,
+        (ConditionTemplateBase o1, ConditionTemplateBase o2) -> o1.getCode().compareTo(o2.getCode()));
+
+
+/**
+ *  Java 8에서 List 인터페이스에 추가된 sort 메서드를 이요하면 더욱 짧아짐
+ */
+
+// 조건코드 오름차순 정렬
+outList.sort((ConditionTemplateBase o1, ConditionTemplateBase o2) -> o1.getCode().compareTo(o2.getCode()));
+
+```
+
+- 람다는 이름이 없고 문서화도 못 한다.
+- 따라서 코드 자체로 동작이 명확히 설명되지 않거나 코드 줄 수가 많아지면 람다를 쓰지 말아야 한다.
+- 람다는 한 줄 일 때 가장 좋고 길어야 세 줄 안에 끝내는게 좋다.
