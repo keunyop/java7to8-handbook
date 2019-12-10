@@ -333,3 +333,16 @@ outList.sort((ConditionTemplateBase o1, ConditionTemplateBase o2) -> o1.getCode(
 - 람다는 이름이 없고 문서화도 못 한다.
 - 따라서 코드 자체로 동작이 명확히 설명되지 않거나 코드 줄 수가 많아지면 람다를 쓰지 말아야 한다.
 - 람다는 한 줄 일 때 가장 좋고 길어야 세 줄 안에 끝내는게 좋다.
+
+
+#### 7.43 람다보다는 메서드 참조를 사용하라
+※ 메서드 참조 쪽이 짧고 명확하다면 메서드 참조를 쓰고, 그렇지 않을 때만 람다를 사용하라.
+
+
+|메서드 참조 유형|예|같은 기능을 하는 람다|
+|:-|:-|:-|
+|정적|Integer::parseInt|str -> Integer.parseInt(str)|
+|한정적(인스턴스)|Instant.now()::isAfter|Instant then = Instant.now(); t-> then.isAfter(t)|
+|비한정적(인스턴스)|String::toLowerCase|str -> str.toLowerCase()|
+|클래스 생성자|TreeMap<K, V>::new|() -> new TreeMap<K, V>()|
+|배열 생성자|int[]::new|len -> new int[len]|
