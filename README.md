@@ -346,3 +346,6 @@ outList.sort((ConditionTemplateBase o1, ConditionTemplateBase o2) -> o1.getCode(
 |비한정적(인스턴스)|String::toLowerCase|str -> str.toLowerCase()|
 |클래스 생성자|TreeMap<K, V>::new|() -> new TreeMap<K, V>()|
 |배열 생성자|int[]::new|len -> new int[len]|
+
+#### 7.46 스트림에서는 부작용 없는 함수를 사용하라
+※ 가장 중요한 수집기 팩터리는 toList, toSet, toMap, groupingBy, joining이다.
