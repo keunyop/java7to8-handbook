@@ -349,3 +349,48 @@ outList.sort((ConditionTemplateBase o1, ConditionTemplateBase o2) -> o1.getCode(
 
 #### 7.46 스트림에서는 부작용 없는 함수를 사용하라
 ※ 가장 중요한 수집기 팩터리는 toList, toSet, toMap, groupingBy, joining이다.
+
+### 8. 매서드
+
+#### 8.49 매개변수가 유효한지 검사하라
+
+- 자바의 null 검사 기능 사용하기
+```java
+Objects.requireNonNull();
+```
+
+- public이 아닌 매서드라면 단언문(assert)을 사용해 매개변수 유효성을 검증할 수 있다.
+```java
+assert a != null;
+assert offset >= 0 && offset <= a.length;
+assert length >= 0 && length <= a.length - offset;
+```
+
+#### 8.50 적시에 방어적 복사본을 만들라
+
+- Date는 낡은 API이니 새로운 코드를 작성할 떄는 더 이상 사용하면 안된다. (Instant 나 LocalDateTime, ZOnedDateTime을 사용)
+
+```java
+// Period 인스턴스의 내부를 공격
+Date start = new Date();
+Date end = new Date();
+Period p = new Period(start, end);
+end.setYear(78); // p의 내부를 수정했다!
+```
+
+- 기존에 작성된 낡은 코드 대처 방법 => 생성자에서 받은 가변 매개변수 각각을 방어적으로 복사
+
+```java
+public Period(Date start, Date end) {
+    this.start = new Date(start.getTime());
+    this.end = new Date(end.getTime());
+}
+```
+
+※ 방어적 복사는 성능 저하가 따르므로 호출자가 컴포넌트 내부를 수정하지 않으리라 확신하면 방어적 복사를 생략할 수 있다.
+
+#### 8.51 매서드 시그니처를 신중히 설계하라
+
+- 매서드 이름을 신중히 짖자. 같은 패키지에 속한 다른 이름들과 일관되게 짓는 게 최우선 목표
+- 메서드를 너무 많이 만들지 말자.
+- 매개변수 목록은 짭게 유지하자. 4개 이하가 좋다.
